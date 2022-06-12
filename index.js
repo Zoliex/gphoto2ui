@@ -35,6 +35,7 @@ child.stdout.on("data", function (data) {
 
 io.on("connection", (socket) => {
   if (last_img_name != img_name) {
+    console.log("Sending image name: " + img_name);
     socket.emit("new_photo", img_name);
     last_img_name = img_name;
   }
