@@ -8,7 +8,7 @@ var cors = require("cors");
 var spawn = require("child_process").spawn;
 
 var save_path = "/home/pi/photos/";
-// Create a child process
+var kill_old_process = spawn("pkill", ["-f", "gphoto2"]);
 var child = spawn("gphoto2", ["--wait-event-and-download"], {
   cwd: save_path,
 });
