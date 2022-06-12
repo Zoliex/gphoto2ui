@@ -23,16 +23,14 @@ var img_name = "";
 app.use(express.static("public"));
 
 child.stdout.on("data", function (data) {
-    console.log("Gphoto2 output: " + data);
-    data = data.toString();
-    if (data.includes("Overwrite? [y|n]")) child.stdin.write("y\n");
-    if (data.includes("Saving file as")) {
-      data = data.split("\n");
-      console.log(data);
-      img_name = data.filter((item) => item.includes("Saving file as"))[0];
-      img_name = img_name.split(" ")[3];
-      console.log("Photo taken");
-    }
+  data = data.toString();
+  if (data.includes("Overwrite? [y|n]")) child.stdin.write("y\n");
+  if (data.includes("Saving file as")) {
+    data = data.split("\n");
+    img_name = data.filter((item) => item.includes("Saving file as"))[0];
+    img_name = img_name.split(" ")[3];
+    console.log("Image name: " + img_name);
+  }
 });
 
 io.on("connection", (socket) => {
