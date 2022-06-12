@@ -33,7 +33,7 @@ io.on("connection", (socket) => {
       img_name = data.filter((item) => item.includes("Saving file as"))[0];
       img_name = img_name.split(" ")[3];
       console.log("Image name: " + img_name);
-      socket.send("new_photo", img_name);
+      socket.emit("new_photo", img_name);
     }
   });
 });
