@@ -17,22 +17,27 @@ child.stderr.on("data", function (data) {
 child.on("close", function (code) {
   console.log("child process exited with code " + code);
 });
+var last_img_name = "";
+var img_name = "";
 
 app.use(express.static("public"));
 
+child.stdout.on("data", function (data) {
+  console.log("Gphoto2 output: " + data);
+  if (data.includes("Overwrite? [y|n]")) child.stdin.write("y\n");
+  if (data.includes("Saving file as")) {
+    data.split("\n");
+    img_name = data.filter((photo) => photo.includes("Saving file as"))[0];
+    img_name = img_name.split(" ")[3];
+    console.log("Photo taken");
+  }
+});
+
 io.on("connection", (socket) => {
-  child.stdout.on("data", function (data) {
-    console.log("Gphoto2 output: " + data);
-    if (data.includes("Overwrite? [y|n]")) child.stdin.write("y\n");
-    if (data.includes("Saving file as")) {
-      data.split("\n");
-      socket.emit(
-        "photo",
-        data.filter((photo) => photo.includes("Saving file as"))[0]
-      );
-      console.log("Photo taken");
-    }
-  });
+  if (last_img_name != img_name) {
+    socket.emit("new_photo", img_name);
+    last_img_name = img_name;
+  }
 });
 
 server.listen(5600, () => {
