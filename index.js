@@ -27,7 +27,7 @@ child.stdout.on("data", function (data) {
   if (data.includes("Overwrite? [y|n]")) child.stdin.write("y\n");
   if (data.includes("Saving file as")) {
     data = toString(data).split("\n");
-    img_name = data.filter((item) => item.indexOf("Saving file as") != -1);
+    img_name = data.filter((item) => item.indexOf("Saving file as") != -1)[0];
     img_name = img_name.split(" ")[3];
     console.log("Photo taken");
   }
