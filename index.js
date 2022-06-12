@@ -34,6 +34,7 @@ child.stdout.on("data", function (data) {
 });
 
 io.on("connection", (socket) => {
+  console.log("client connected !");
   setInterval(() => {
     if (last_img_name != img_name) {
       console.log("Sending image name: " + img_name);
