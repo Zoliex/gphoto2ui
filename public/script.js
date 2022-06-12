@@ -1,5 +1,6 @@
 var socket = io();
 
-  socket.on("new_photo", (msg) => {
-    alert("message: " + msg);
-  });
+socket.on("new_photo", (msg) => {
+  var image_name = document.getElementById("image_name");
+  image_name.innerHTML = msg;
+});
