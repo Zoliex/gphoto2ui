@@ -4,6 +4,7 @@ const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
+var cors = require("cors");
 var spawn = require("child_process").spawn;
 
 var save_path = "/home/pi/photos/";
@@ -24,6 +25,7 @@ var img_name = "";
 
 app.use(express.static("public"));
 app.use("/photos", express.static(save_path));
+app.use(cors());
 
 child.stdout.on("data", function (data) {
   data = data.toString();
