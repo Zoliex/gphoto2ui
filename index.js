@@ -26,8 +26,8 @@ child.stdout.on("data", function (data) {
   console.log("Gphoto2 output: " + data);
   if (data.includes("Overwrite? [y|n]")) child.stdin.write("y\n");
   if (data.includes("Saving file as")) {
-    toString(data).split("\n");
-    img_name = data.filter((item) => !item.includes("Saving file as"))[0];
+    data = toString(data).split("\n");
+    img_name = data.filter((item) => item.indexOf("Saving file as") != -1);
     img_name = img_name.split(" ")[3];
     console.log("Photo taken");
   }
