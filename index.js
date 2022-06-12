@@ -22,26 +22,20 @@ var img_name = "";
 
 app.use(express.static("public"));
 
-child.stdout.on("data", function (data) {
-  data = data.toString();
-  if (data.includes("Overwrite? [y|n]")) child.stdin.write("y\n");
-  if (data.includes("Saving file as")) {
-    data = data.split("\n");
-    img_name = data.filter((item) => item.includes("Saving file as"))[0];
-    img_name = img_name.split(" ")[3];
-    console.log("Image name: " + img_name);
-  }
-});
 
 io.on("connection", (socket) => {
   console.log("client connected !");
-  setInterval(() => {
-    if (last_img_name != img_name) {
-      console.log("Sending image name: " + img_name);
-      socket.emit("new_photo", img_name);
-      last_img_name = img_name;
+  child.stdout.on("data", function (data) {
+    data = data.toString();
+    if (data.includes("Overwrite? [y|n]")) child.stdin.write("y\n");
+    if (data.includes("Saving file as")) {
+      data = data.split("\n");
+      img_name = data.filter((item) => item.includes("Saving file as"))[0];
+      img_name = img_name.split(" ")[3];
+      console.log("Image name: " + img_name);
+      socket.send("new_photo", img_name);
     }
-  }, 100);
+  });
 });
 
 server.listen(5600, () => {
