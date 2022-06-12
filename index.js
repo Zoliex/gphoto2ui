@@ -5,9 +5,11 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 var spawn = require("child_process").spawn;
+
+var save_path = "/home/pi/photos/";
 // Create a child process
 var child = spawn("gphoto2", ["--wait-event-and-download"], {
-  cwd: "/home/pi/photos",
+  cwd: save_path,
 });
 child.stderr.on("data", function (data) {
   //throw errors
@@ -21,6 +23,7 @@ var last_img_name = "";
 var img_name = "";
 
 app.use(express.static("public"));
+app.use("/photos", express.static(save_path));
 
 child.stdout.on("data", function (data) {
   data = data.toString();
