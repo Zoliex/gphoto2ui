@@ -32,7 +32,7 @@ app.use(cors());
 
 
 var child = spawn("gphoto2", ["--wait-event-and-download"], {
-  cwd: save_path,
+  cwd: path.join(save_path, "photos", date),
 });
 
 child.stderr.on("data", function (data) {
