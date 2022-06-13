@@ -3,17 +3,33 @@ const app = express();
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const io = new Server(server);
 var cors = require("cors");
 var spawn = require("child_process").spawn;
+const fs = require("fs");
+const path = require("path");
+
+const io = new Server(server);
 var last_img_name = "";
 var img_name = "";
 
 var save_path = "/media/pi/DISK/";
 
+var today = new Date();
+
+var date =
+  today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+
+if (!fs.existsSync(path.join(save_path, "photos"))) {
+  fs.mkdirSync(path.join(save_path, "photos"));
+}
+if (!fs.existsSync(path.join(save_path, "photos", date))) {
+  fs.mkdirSync(path.join(save_path, "photos", date));
+}
+
 app.use(express.static("public"));
-app.use("/photos", express.static(save_path));
+app.use("/photos", express.static(path.join(save_path, "photos", date)));
 app.use(cors());
+
 
 var child = spawn("gphoto2", ["--wait-event-and-download"], {
   cwd: save_path,
