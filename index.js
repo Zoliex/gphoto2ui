@@ -10,7 +10,6 @@ var last_img_name = "";
 var img_name = "";
 
 var save_path = "/home/pi/photos/";
-spawn("pkill", ["-f", "gphoto2"]);
 
 app.use(express.static("public"));
 app.use("/photos", express.static(save_path));
