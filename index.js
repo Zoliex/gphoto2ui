@@ -27,7 +27,7 @@ child.stderr.on("data", function (data) {
 
 child.on("close", function (code) {
   console.log("child process exited with code " + code);
-  if (data.includes("Could not detect any camera")) console.log("NO CAMERA");
+  process.exit(code);
 });
 
 child.stdout.on("data", function (data) {
