@@ -45,7 +45,7 @@ io.on("connection", (socket) => {
   setInterval(() => {
     if (last_img_name != img_name) {
       console.log("Sending image name: " + img_name);
-      socket.emit("new_photo", img_name);
+      io.emit("new_photo", img_name);
       last_img_name = img_name;
     }
   }, 100);
