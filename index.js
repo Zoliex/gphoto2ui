@@ -27,11 +27,11 @@ child.stderr.on("data", function (data) {
 
 child.on("close", function (code) {
   console.log("child process exited with code " + code);
+  if (data.includes("Could not detect any camera")) console.log("NO CAMERA");
 });
 
 child.stdout.on("data", function (data) {
   data = data.toString();
-  if (data.includes("Could not detect any camera")) console.log("NO CAMERA");
   if (data.includes("Overwrite? [y|n]")) child.stdin.write("y\n");
   if (data.includes("Saving file as")) {
     data = data.split("\n");
