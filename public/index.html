@@ -5,13 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gphoto2UI</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="public/style.css" />
     <script src="/socket.io/socket.io.js"></script>
-    <script src="dcraw.js"></script>
-    <script src="script.js"></script>
+    <script src="public/dcraw.js"></script>
+    <script src="public/script.js"></script>
   </head>
   <body>
-    <img id="img" src="" alt="" />
-    <h1 id="image_name">??????????????.nef</h1>
+    <img id="img" src="" />
+    <h1 id="image_name">D90-??????????????.nef</h1>
+    <button id="download"><img src="public/download.svg"></button>
+    <img src="public/loader.gif" id="loader">
   </body>
 </html>

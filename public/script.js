@@ -1,11 +1,12 @@
 var socket = io();
 
+var download_url = "";
 socket.on("new_photo", (name) => {
-  var image_name = document.getElementById("image_name");
-  image_name.innerHTML = name;
   const imageUrl = "photos/" + name;
 
   (async () => {
+    var loader = document.getElementById("loader");
+    loader.style.display = "block";
     const response = await fetch(imageUrl);
     var buf = new Uint8Array(await response.arrayBuffer());
     var thumbnail = dcraw(buf, { extractThumbnail: true });
@@ -14,13 +15,27 @@ socket.on("new_photo", (name) => {
     var thumbnail_src = urlCreator.createObjectURL(blob);
     var img = document.getElementById("img");
     img.src = thumbnail_src;
+    var image_name = document.getElementById("image_name");
+    image_name.innerHTML = name;
+    download_url = "photos/" + name;
+    loader.style.display = "none";
   })();
 });
-
-document.onclick = function (event) {
-  if (document.fullscreenElement) {
-    document.exitFullscreen();
+window.onload = function () {
+  if (window.location.hostname == "localhost") {
+    document.onclick = function (event) {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        document.documentElement.requestFullscreen();
+      }
+    };
   } else {
-    document.documentElement.requestFullscreen();
+    console.log("Not localhost");
+    var download = document.getElementById("download");
+    download.style.display = "block";
+    download.onclick = function () {
+      window.open(download_url, "_blank").focus();
+    };
   }
 };
