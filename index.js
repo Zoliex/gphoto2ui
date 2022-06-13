@@ -9,12 +9,12 @@ var spawn = require("child_process").spawn;
 var last_img_name = "";
 var img_name = "";
 
+var save_path = "/home/pi/photos/";
+spawn("pkill", ["-f", "gphoto2"]);
+
 app.use(express.static("public"));
 app.use("/photos", express.static(save_path));
 app.use(cors());
-
-var save_path = "/home/pi/photos/";
-spawn("pkill", ["-f", "gphoto2"]);
 
 var child = spawn("gphoto2", ["--wait-event-and-download"], {
   cwd: save_path,
