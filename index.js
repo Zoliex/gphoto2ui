@@ -6,12 +6,20 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 var cors = require("cors");
 var spawn = require("child_process").spawn;
+var last_img_name = "";
+var img_name = "";
+
+app.use(express.static("public"));
+app.use("/photos", express.static(save_path));
+app.use(cors());
 
 var save_path = "/home/pi/photos/";
-var kill_old_process = spawn("pkill", ["-f", "gphoto2"]);
+spawn("pkill", ["-f", "gphoto2"]);
+
 var child = spawn("gphoto2", ["--wait-event-and-download"], {
   cwd: save_path,
 });
+
 child.stderr.on("data", function (data) {
   //throw errors
   console.log("stderr: " + data);
@@ -20,15 +28,10 @@ child.stderr.on("data", function (data) {
 child.on("close", function (code) {
   console.log("child process exited with code " + code);
 });
-var last_img_name = "";
-var img_name = "";
-
-app.use(express.static("public"));
-app.use("/photos", express.static(save_path));
-app.use(cors());
 
 child.stdout.on("data", function (data) {
   data = data.toString();
+  if (data.includes("Could not detect any camera")) process.exit(0);
   if (data.includes("Overwrite? [y|n]")) child.stdin.write("y\n");
   if (data.includes("Saving file as")) {
     data = data.split("\n");
