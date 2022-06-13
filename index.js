@@ -9,7 +9,7 @@ var spawn = require("child_process").spawn;
 var last_img_name = "";
 var img_name = "";
 
-var save_path = "/home/pi/photos/";
+var save_path = "/media/pi/DISK/";
 
 app.use(express.static("public"));
 app.use("/photos", express.static(save_path));

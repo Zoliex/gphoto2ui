@@ -16,3 +16,11 @@ socket.on("new_photo", (name) => {
     img.src = thumbnail_src;
   })();
 });
+
+document.onclick = function (event) {
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  } else {
+    document.documentElement.requestFullscreen();
+  }
+};
